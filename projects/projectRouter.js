@@ -25,16 +25,6 @@ router.get('/:id', (req, res) => {
     });
 });
 
-//In a real project, I would put this in a different router.
-router.get('/resources', (req, res) => {
-    projects.getAllResources().then(resources => {
-        res.status(200).json(resources);
-    }).catch(err => {
-        console.log(err);
-        res.status(500).json({ message: 'Unable to retrieve a list of resources.'});
-    });
-});
-
 router.get('/:id/resources', (req, res) => {
     projects.getResourcesByProjectId(req.params.id).then(resources => {
         if (resources.length > 0) {

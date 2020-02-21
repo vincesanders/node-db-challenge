@@ -2,11 +2,10 @@ const db = require('../data/db-config');
 
 module.exports = {
     getProjects,
-    getAllResources,
     getProjectById,
     getResourcesByProjectId,
     getTaskByProjectId
-}
+};
 
 function getProjects() {
     return db('project');
@@ -14,10 +13,6 @@ function getProjects() {
 
 function getProjectById(id) {
     return db('project').where({ id });
-}
-
-function getAllResources() {
-    return db('resource');
 }
 
 function getResourcesByProjectId(id) {
