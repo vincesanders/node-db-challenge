@@ -51,4 +51,23 @@ router.get('/:id/tasks', (req, res) => {
     });
 });
 
+router.post('/', validateProject, (req, res) => {
+    projects.insert(req.body).then(project => {
+        res.status(201).json(project);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({ message: 'Unable to add the project.'});
+    })
+});
+
+function validateProject(req, res, next) {
+    if (!req.body) {
+        res.status(500).json({ message: "Please include a body for your request."});
+    } else if (!req.body.name) {
+        res.status(500).json({ message: "Please include the name of the project"});
+    } else {
+        next();
+    }
+}
+
 module.exports = router;

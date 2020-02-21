@@ -19,7 +19,7 @@ router.post('/', validateResource, (req, res) => {
         console.log(err);
         res.status(500).json({ message: 'Unable to add the resources.'});
     })
-})
+});
 
 function validateResource(req, res, next) {
     if (!req.body) {
