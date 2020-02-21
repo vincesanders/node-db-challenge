@@ -7,6 +7,12 @@ module.exports = {
     connection: {
       filename: './data/projects.db3'
     },
+    seeds: {
+      directory: './data/seeds'
+    },
+    migrations: {
+      directory: '.data/migrations'
+    },
     useNullAsDefault: true,
     pool: {
       afterCreate: (conn, done) => {
