@@ -33,7 +33,7 @@ function getTaskById(id) {
 function getTaskByProjectId(id) {
     return db('task as t')
         .join('project as p', 't.project_id', 'p.id')
-        .select('p.name as project-name', 'p.description as project-description', 't.id', 't.description', 't.notes')
+        .select('p.name as project-name', 'p.description as project-description', 't.id', 't.description', 't.notes', 't.completed')
         .where('t.project_id', id);
 }
 

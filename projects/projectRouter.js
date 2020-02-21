@@ -13,7 +13,48 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', validateProjectId, (req, res) => {
-    res.status(200).json(req.project);
+    const data = { ...req.project };
+    
+    projects.getTaskByProjectId(req.params.id).then(tasks => {
+        if (tasks.length > 0) {
+                data.completed = isCompleted(tasks);
+            data.tasks = tasks.map(task => {
+                task.completed === 0 ? task.completed = false : task.completed = true;
+                return { 
+                    id: task.id, 
+                    description: task.description, 
+                    notes: task.notes, 
+                    completed: task.completed 
+                }
+            });
+            projects.getResourcesByProjectId(req.params.id).then(resources => {
+                if (resources.length > 0) {
+                    data.resources = resources;
+                    res.status(200).json(data);
+                } else {
+                    res.status(404).json({ message: 'Unable to retrieve the resources for the project you requested' });
+                }
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({ message: 'Unable to retrieve the resources requested.'});
+            });
+        } else {
+            res.status(404).json({ message: 'Unable to retrieve the tasks for the project you requested' });
+        }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({ message: 'Unable to retrieve the tasks requested.'});
+    });
+
+    function isCompleted(arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].completed === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 });
 
 router.get('/:id/resources', validateProjectId, (req, res) => {
